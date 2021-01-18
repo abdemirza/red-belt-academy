@@ -1,0 +1,60 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <% month=["January","February","March","April","May","June","July","August","September","October","November","December"]%> 
+      <% include('./partials/messages') %> <% for(tournament of tournaments){ %>
+        <% event_date=tournament.event_date.split('-'),last_date=tournament.last_entry.split('-') %> 
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4
+              class="card-title text-center font-weight-bold"
+              style="color: #5e35b1; font-size: 1.5em;"
+            >
+              <%= tournament.name %>
+            </h4>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="badge badge-pill badge-primary mr-2">1</div>
+                  <div class="d-inline display-5">Start of Tournament :</div>
+                  <div class="text-danger d-inline">
+                    <%= month[parseInt(event_date[1])-1]+' '+event_date[2]+' '+', '+event_date[0]%>
+                  </div>
+                </td>
+                
+              </tr>
+              <br><br>
+              <tr>
+                <td>
+                  <div class="badge badge-pill badge-danger mr-2">2</div>
+                  <div class="d-inline display-5">Last Date of Entry :</div>
+                  <div class="text-danger d-inline">
+                    <%= month[parseInt(last_date[1])-1]+' '+last_date[2]+' '+', '+last_date[0]%>
+                  </div>
+                </td>
+                <br><br>
+                <div class="badge badge-pill badge-warning mr-2">3</div>
+                <div class="d-inline display-5">Tournament Categories:</div>
+                <form action="/judgeMatch/<%= tournament._id %>" method="POST">
+                 <div class="form-group mt-3 text-center">
+                     <select id="role" class="btn-group btn btn-light dropdown-toggle-split btn-sm" name="category">
+                       <% for(category of Object.keys(tournament.categories)){ %> 
+                          <option value="<%=category%>" class="form-group" name='category'><%= category %> </option>
+                       <% } %> 
+                        </select>
+                        <button class=" mt-2 btn btn-primary btn-block btn-sm">Start Judging</button>
+                      </div>
+                </form>
+              </tr>
+            </tbody>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    
+    <%- include('./partials/dashboardFooter.ejs') %>
+  </div>
+</div>

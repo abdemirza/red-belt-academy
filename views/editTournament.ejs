@@ -1,0 +1,76 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <form action="/editTournament/<%= tournament._id %>" method="POST">
+              <div class="d-flex justify-content-between">
+                <h6 class="card-title">Edit Details :</h6>
+              </div>
+              <div class="list d-flex align-items-center border-bottom pb-3">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="name"
+                    placeholder="Tournament's Name"
+                    value="<%= tournament.name %>"
+                  />
+                </div>
+              </div>
+              <label for="name" class="mt-3">Last Date of Entry :</label>
+              <div
+                class="list d-flex align-items-center border-bottom pb-3 mt-1"
+              >
+                <div class="form-group">
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="last_entry"
+                    value="<%= tournament.last_entry %>"
+                    placeholder="Tournament Name"
+                  />
+                </div>
+              </div>
+              <label for="name" class="mt-3">Tournament's Date :</label>
+              <div
+                class="list d-flex align-items-center border-bottom pb-3 mt-1"
+              >
+                <div class="form-group">
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="event_date"
+                    placeholder="Tournament Name"
+                    value="<%= tournament.event_date %>"
+                  />
+                </div>
+              </div>
+              <label for="name" class="mt-3">Add more categories :</label>
+              <div
+                class="list d-flex align-items-center border-bottom pb-3 mt-1"
+              >
+                <div class="form-group">
+                 <select name="categories" id="" class="form-control" multiple>
+                   <% categories='MU7 MU8 MU9 MU10 MU12 MU14 MU16 MU18 MSENIOR FU7 FU8 FU9 FU10 FU12 FU14 FU16 FU18 FSENIOR'.split(' ') , categoriesSet=new Set(Object.keys(tournament.categories)) %> 
+                   <% for (key of categories){ if(!categoriesSet.has(key)){ %> 
+                   <option class="form-control"><%= key %> </option>
+                   <% } } %> 
+                 </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                Update Info.
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./partials/dashboardFooter.ejs') %>
+  </div>
+</div>

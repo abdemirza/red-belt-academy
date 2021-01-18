@@ -1,0 +1,36 @@
+<%- include('./partials/dashboardHeader') %>
+
+<!--! *********************************** -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <% month=["January","February","March","April","May","June","July","August","September","October","November","December"]%> 
+      <% include('./partials/messages') %> <% for(tournament of tournaments){ %>
+        <% event_date=tournament.event_date.split('-'),last_date=tournament.last_entry.split('-') %> 
+        <% for(tournament of tournaments){ categories=Object.keys(contestant.joinedTournaments[tournament._id]) %> 
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4
+              class="card-title text-center font-weight-bold"
+              style="color: #5e35b1; font-size: 1.5em;"
+            >
+              <%= tournament.name %>
+            
+            </h4>
+            <h5>
+            Started On : <%= tournament.event_date.split('-')[2]+' '+month[tournament.event_date.split('-')[1]-1]+' ,'+tournament.event_date.split('-')[0] %> </h5><br>
+           <h5> Categories Joined :</h5> <br>
+            <% categories.forEach((category)=>{%> 
+               <a href="/matchStat/<%= tournament._id+category %>/<%= contestant._id %>/<%= contestant.joinedTournaments[tournament._id][category] %>" class="btn btn-success btn-rounded btn-sm btn-block" style="color: black"><%= category %> </a> 
+           <% }) %> 
+
+            
+          </div>
+        </div>
+      </div>
+      <% } }%>
+    </div>
+    
+
+<%- include('./partials/dashboardFooter') %>

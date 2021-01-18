@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment</title>
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <h1 style="justify-content: center;">Please Wait...</h1>
+      <h3>Do Not Press Any Key.</h3>
+      <img src="/images/logo/Infinity-1s-200px.gif" alt="">
+    <input type="hidden" id="fees" value= <%= data.fees %>  >
+    <script src="/js/autoClick.js"></script>
+    <form action="/joinTournament" method="POST" id="form">
+     
+      <script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          data-key= '<%= key %>'  
+          data-amount= '<%= orderIdData.amount %>' 
+          data-currency="INR"
+          data-order_id="<%= orderIdData.id %>"
+          data-buttontext=""
+          data-name="Red Belt Academy"
+          data-description="<%= data.tournamentName %>"
+          data-image="/images/logo/redBeltSmall.png"
+          data-prefill.name="<%= data.name %>"
+          data-prefill.email="<%= data.email %>"
+          data-theme.color="#F37254"
+      ></script>
+      <input type="hidden" name="tournamentId" value="<%= data.tournamentId  %>">
+      <input type="hidden" name="contestantId" value="<%= data.contestantId  %>">
+      <input type="hidden" name="category" value="<%= data.category %>">
+      <input type="hidden" custom="Hidden Element" name="hidden">
+      <script src="/js/autoClick.js"></script>
+      </form>
+</div>
+
+  </body>
+</html>
+

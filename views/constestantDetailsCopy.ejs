@@ -1,0 +1,47 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row grid-margin stretch-card">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">List of Candidates Joined Tournament</h4>
+
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead style="color: antiquewhite;">
+                  <tr>
+                    <th>NAME</th>
+                    <th>DOB</th>
+                    <th>Tournaments Joined</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Splitting data from contestant database from array of objects -->
+                  <% for(contestant of contestants) { %>
+                    <tr style="color: antiquewhite;">
+                      <td>
+                    <h4><%= contestant.name %></h4>
+                  </td>
+                  <td>
+                    <h4><%= contestant.birthday %> </h4>
+                  </td>
+                  <td>
+                    <h4><%= Object.keys(contestant.joinedTournaments).length %> </h4>
+                  </td>
+                  <td>
+                    <a href="/contestantDetails/<%=contestant._id%>" class="btn btn-danger btn-sm mb-2">More Info</a>
+                  </td>
+                </tr>
+                  <% } %> 
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <%- include('./partials/dashboardFooter.ejs') %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

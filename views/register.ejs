@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Login</title>
+    <link rel="stylesheet" href="/font/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="/css/vendor/vendor.bundle.base.css" />
+    <link rel="stylesheet" href="/css/vendor/vendor.bundle.addons.css" />
+    <!-- plugins:css -->
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/css/styleDashboard.css" />
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+  </head>
+  <body class="sidebar-dark">
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth">
+          <div class="row wl-100">
+            <div class="col-lg-4 mx-auto">
+              <div class="auth-form-light text-left p-5" style="background-color: #8EC5FC;
+              background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); color: black;
+              ">
+                <div class="brand-logo img-sm "  style="margin: 25px auto">
+                  <img src="/images/icons/signUpLogo.png" alt="logo">
+                </div>
+                <div class="text-center">
+                <h4>New here?</h4>
+                <h6 class="font-weight-light m-2">Signing up is all you need .</h6>
+              </div>
+          <%- include('./partials/messages.ejs') %>
+          <form action="/users/register" method="POST">
+            <div class="form-group mt-4">
+              <label for="name">Name</label>
+              <input
+                type="name"
+                id="name"
+                name="name"
+                class="form-group"
+                placeholder="Enter Name"
+                value="<%= typeof name != 'undefined' ? name : '' %>"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-group"
+                placeholder="Enter Email"
+                value="<%= typeof email != 'undefined' ? email : '' %>"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-group"
+                placeholder="Create Password"
+                value="<%= typeof password != 'undefined' ? password : '' %>"
+                required
+                minlength="8"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password2">Confirm Password</label>
+              <input
+                type="password"
+                id="password2"
+                name="password2"
+                class="form-group"
+                placeholder="Confirm Password"
+                value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+                required
+                minlength="8"
+              />
+            </div>
+            <div class="form-group">
+              <label >Signing Up As :</label>
+              <select id="role" class="btn-group btn btn-dark dropdown-toggle-split btn-sm" name="role">
+                <option value="C" class="form-group">Contestant</option>
+                <option value="H" class="form-group">Tournament Host</option>
+                <option value="J" class="form-group">Judge</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <div class="form-check">
+                <label class="form-check-label" style="color:#004d40;">
+                  <input type="checkbox" required>
+                  I agree to all Terms & Conditions
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-user-plus"></i>
+              Register
+            </button>
+          </form>
+          <div class="text-center mt-4 font-weight-light">
+            Have An Account? <a class='text-danger font-weight-bold' href="/users/login">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendor/vendor.bundle.base.js"></script>
+    <script src="/js/vendor/vendor.bundle.addons.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="/js/off-canvas.js"></script>
+    <script src="/js/hoverable-collapse.js"></script>
+    <script src="/js/template.js"></script>
+    <script src="/js/settings.js"></script>
+    <script src="/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="/js/dashboard.js"></script>
+    <!-- End custom js for this page-->
+
+    <!-- endinject -->
+  </body>
+</html>

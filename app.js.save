@@ -1,0 +1,91 @@
+const express = require("express");
+const app = express();
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const expressLayouts = require("express-ejs-layouts");
+const mongoose = require("mongoose");
+const PORT = 80 ;
+const db = require("./config/keys").MongoURI;
+const flash = require("connect-flash");
+const session = require("express-session");
+const passport = require('passport')
+const upload = require('express-fileupload');
+const User = require("./models/User");
+
+app.use(upload()) //! For file uploads
+// Certificate
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/redbeltacademy.in/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/redbeltacademy.in/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/redbeltacademy.in/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
+
+// ! MongoDB config
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log("DataBase connected"))
+  .catch((err) => console.log(err));
+// ! Passport Config
+require('./config/passport')(passport)
+// ! for layouts
+app.use(expressLayouts);
+// ! for setting ejs to default
+app.set("view engine", "ejs");
+// ! Body Parser to get data from my forms
+app.use(express.urlencoded({ extended: true }));
+// ! express session
+app.use(
+  session({
+    secret: "funnyBone",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(express.static(__dirname + '/public'));
+// ! Initialising Passport Middleware (Order is important)
+app.use(passport.initialize());
+app.use(passport.session());
+app.engine('html', require('ejs').renderFile);
+// ! connect flash
+app.use(flash());
+// ! Global Variables
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error=req.flash('error')
+  res.locals.user = req.user || null;
+  next();
+});
+app.use(function (req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  next();
+});
+
+// !routes defined in the routes folder
+app.use("/", require("./routes/index"));
+app.use("/users", require("./routes/user"));
+app.use("/register", require("./routes/index"));
+// ! Error Page for an undefined route
+app.get('*', function(req, res){
+  res.status(404).render('404');
+});
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+httpServer.listen(PORT, console.log(`Server started on port ${PORT}`));
+httpsServer.listen(443,()=>{
+console.log('HTTPS RUNNING ON 443');
+})
+// hello
+
+
+
+
+
+
+

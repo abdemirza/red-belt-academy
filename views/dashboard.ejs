@@ -1,0 +1,229 @@
+<%- include('./partials/dashboardHeader.ejs') %> 
+   <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            
+            <% var address=['name','contact','street_address','state','city','zipcode'],title=['Name','Contact*','Street address','State','City','Zipcode'] %> 
+            <div class="row">
+              <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <form action="/users/update" method="POST">
+                      <div class="d-flex justify-content-between">
+                        <h6 class="card-title">Your Info</h6>
+                      </div>
+                      <% for (i=0;i<address.length;i++){ %> 
+                      <div
+                        class="list d-flex align-items-center border-bottom pb-3"
+                      >
+                       <div class="form-group">
+                          <label for="<%= address[i] %>" > <%= title[i] %> </label>
+                          <input
+                            id="<%=address[i]%>"
+                            name="<%=address[i]%>"
+                            class="form-control"
+                            placeholder="<%=title[i]%> "
+                            value="<%=user[address[i]]?user[address[i]]:user.address[address[i]]%>"
+                            <% if(address[i]=='name'){ %> 
+                            pattern="[a-zA-Z][a-zA-Z ]+[a-zA-Z]$"
+                            <% } else if(address[i]=='contact'){%>
+                              pattern= '\d{10}'
+                              required title="Enter a 10 digit Mobile Number without country code"
+                            <% } %> 
+                            
+                          />
+                        </div>
+                       
+                      </div>
+                      <% } %> 
+                    
+                      <button type="submit" class="btn btn-primary btn-block">
+                        Update Info.
+                      </button>
+                    </form>
+                  </div>
+                </div>
+            
+              </div>
+              <% club_data=['club_name','state','style_name','abbreviation','address','zipcode'] ,title=['Club\'s Name','State','Style Name','Coach Name','Address','Zipcode'] %> 
+              <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                    <form action="/users/updateClub" method="POST">
+                      <div class="d-flex justify-content-between">
+                        <h6 class="card-title ">Club Info</h6>
+                      </div>
+                      <% for (i=0;i<title.length;i++){ %> 
+                      <div
+                        class="list d-flex align-items-center border-bottom mb-2"
+                      >
+                       <div class="form-group">
+                          <label for="<%= title[i] %>" > <%= title[i] %> </label>
+                          <input
+                            id="<%=club_data[i]%>"
+                            name="<%=club_data[i]%>"
+                            class="form-control"
+                            placeholder="<%=title[i]%> "
+                            value='<%=user.club_data[club_data[i]]%>'
+                          />
+                        </div>
+                      </div>
+                      <% } %> 
+                    
+                      <button type="submit" class="btn btn-success btn-block mt-5">
+                        Update Info.
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if(user.role=='C'){ %> 
+            <div class="row grid-margin">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Your Competitors</h4>
+                    <div class="d-flex table-responsive">
+                     
+                      
+                      
+                    </div>
+                   
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead style="color: antiquewhite;">
+                          <tr>
+                            <th>PID</th>
+                            <th>NAME</th>
+                            <th>Gender</th>
+                            <th>State</th>
+                            <th>BIRTHDAY</th>
+                            <th>WEIGHT</th> 
+                            <th>HEIGHT(in ft)</th>
+                            <th>PICTURE</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        
+                          <!-- Splitting data from contestant database from array of objects -->
+                          <% for(obj of contestants) { %> 
+                          <tr style="color: antiquewhite;">
+                            <% contestantId = obj._id %> 
+                            <% for(key in obj.toObject()){ %> 
+                            <% if(key!='club_id' && key!='__v' && key!='_id' && key!='age' && key!='joinedTournaments' && key!='payments'){ %> 
+                            <td>
+                              <!-- Checking if the key is for Gender -->
+                              <%= key=='gender'?obj[key]?'Male':'Female':obj[key] %> 
+                            </td>
+                          <% } %>
+                        <%} %>
+                        <form action="/users/reupload" method="POST" encType="multipart/form-data">
+                          <input type="hidden" name="contestantId" value= <%= contestantId %> >
+                          <td>
+                            <div class="input-file-container btn btn-sm"> 
+                              <input class="ml-5 input-file" id="my-file" name="picture" type="file">
+                              <label tabindex="0" for="my-file" class="input-file-trigger">Edit Photo</label>
+                            </div>
+                            <td><button class="btn btn-primary btn-sm">Reupload</button></td>
+                        </td>
+                        </form>
+                        <form action="/users/deleteContestant" method="POST">
+                          <input type="hidden" name="contestantId" value='<%= obj._id %>'>
+                        <td>
+                          <button class="btn btn-danger btn-sm">Remove Contestant</button>
+                        </td>
+                      </form>
+                        <%}%> 
+                          </tr>
+                          <form action="/users/updateCompetitor" method="post"
+                          ref='uploadForm' 
+                          id='uploadForm' 
+                          method='post' 
+                          encType="multipart/form-data"
+                          >
+                          <tr style="color: antiquewhite;">
+                            <td>---</td>
+                            <td><input 
+                              class="input-group-text form-control"
+                              style="width: auto;"
+                              type="text"
+                              name="name" 
+                              pattern="[a-zA-Z][a-zA-Z ]+[a-zA-Z]$"
+                              title="Enter Name"
+                              placeholder="Full Name"
+                              required 
+                              ></td>
+                              <td>
+                                <select name="gender" class="form-control">
+                                  <option value='1'>Male</option>
+                                  <option value='0'>Female</option>
+                                </select></td>
+                                <td><input 
+                                  class="input-group-text form-control"
+                                  style="width: auto;"
+                                  type="text"
+                                  name="state" 
+                                  pattern='[a-zA-Z][a-zA-Z ]+[a-zA-Z]$'
+                                  title="Enter State"
+                                  placeholder="State (ex. Uttar Pradesh)"
+                                  required 
+                                  ></td>
+                                <td><input 
+                                  class="input-group-text form-control"
+                                  style="width: auto;"
+                                  type="text"
+                                  name="bd" 
+                                  pattern='\d{2}[-]\d{2}[-]\d{4}'
+                                  title="Enter Birthday"
+                                  placeholder="DD-MM-YYYY"
+                                  required 
+                                  ></td>
+                                  <td><input 
+                                    class="input-group-text form-control"
+                                    style="width: auto;"
+                                    type="text"
+                                    name="wt" 
+                                    pattern="\d+"
+                                    title="Enter Weight"
+                                    placeholder="In KG"
+                                    required 
+                                    ></td>
+                                    <td><input 
+                                      class="input-group-text form-control"
+                                      style="width: auto;"
+                                      type="text"
+                                      name="ht" 
+                                      pattern='\d+[.]\d+'
+                                      title="Enter Height"
+                                      placeholder="In ft.(ex. 5.3)"
+                                      required 
+                                      ></td>
+                                     
+                                        <td>
+                                        <div class="input-file-container btn btn-sm"> 
+                                          <input class="ml-5 input-file" id="my-file" name="pic" type="file">
+                                          <label tabindex="0" for="my-file" class="input-file-trigger">Select Picture</label>
+                                        </div>
+                                      </td>
+                                        <td>
+                                          <button class="btn btn-primary btn-sm btn-icon-text btn-icon-append btn-rounded">Submit</button>
+                                        </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                     </form>
+                    </div>
+                    
+                    <div
+                      class="d-flex align-items-center justify-content-between flex-column flex-sm-row mt-4"
+                    >
+                      <p class="mb-3 mb-sm-0">Showing 1 to 20 of 20 entries</p>
+                      
+                    </div>
+                  <% } %> 
+                  </div>
+                </div>
+              </div>
+            </div>
+<%- include('./partials/dashboardFooter.ejs') %> 

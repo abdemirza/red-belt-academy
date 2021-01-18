@@ -1,0 +1,4 @@
+Include a start button 
+Change card layout to table
+Change Icons
+DAN KYU optional

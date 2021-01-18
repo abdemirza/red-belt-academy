@@ -1,0 +1,110 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Host New Tournament</h4>
+            <form id="example-form" action="/createTournament" method="POST"
+            ref='uploadForm' 
+                    id='uploadForm' 
+                    method='post' 
+                    encType="multipart/form-data">
+              <div>
+                <h3>Basic Details</h3>
+                <section>
+                  <div class="form-group">
+                    <label>Tournament Title</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Here"
+                      name='event_name'
+                      required
+                      pattern=""
+                    />
+                    <small id="emailHelp" class="form-text text-muted"
+                      >To be displayed to everyone.</small
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label>Tournament's Date</label>
+                    <input
+                      type="date"
+                      name='event_date'
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Last Date of Entries</label>
+                    <input
+                      name='last_entry'
+                      type="date"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                
+                    <div class="input-file-container"> 
+                      <label class="mb-3" for="input-button">Upload Tournament Rules : </label> 
+                      <input class="ml-5 input-file" id="my-file" name="ruleBook" type="file">
+                      <label tabindex="0" for="my-file" class="input-file-trigger">Select a file...</label>
+                    </div>
+                    <p class="file-return"></p>
+      
+                  
+                </section>
+                <h3>Categories</h3>
+                <section>
+                  <h3>Define Categories :</h3>
+                  <% categories='U7 U8 U9 U10 U11 U12 U13 U14 U15 U16 U17 U18 U21 SENIOR'.split(' ')%>
+                  <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            <label for="mcat">Male Categories:</label>
+                            <select class="form-control" id="mcat" name="mcat" size="9" multiple style="height: 100px;">
+                            <% for(i  of categories){ %> 
+                              <option value='M<%=i%>'> <%= i %></option>
+                            <% } %> 
+                            </select><br><br>
+                          </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-check">
+                        <label for="cars">Female Categories:</label>
+                        <select class="form-control" id="fcat" name="fcat" size="4" multiple style="height: 100px;">
+                        <% for(i  of categories){ %> 
+                          <option value='F<%=i%>'><%= i %> </option>
+                        <% } %> 
+                        </select><br><br>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <h3>Entry Fee Details :</h3>
+                <section>
+                  <h3>Entry Fees per Participant</h3>
+                  <br>
+                  <div class="form-group">
+                    <input class="form-control" type="text" name='fees' placeholder="Minimum 500 INR" pattern="[0-9]+" required>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox" />
+                      I agree with the Terms and Conditions.
+                    </label>
+                  </div>
+                </section>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom js for this page-->
+    <%- include('./partials/dashboardFooter.ejs') %>
+  </div>
+</div>

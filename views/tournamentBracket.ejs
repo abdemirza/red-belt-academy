@@ -1,0 +1,16 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+      <iframe
+        src="https://challonge.com/<%= tournament_id+category %>/module?show_standings=1&show_final_result=1"
+        width="100%"
+        height="500"
+        frameborder="0"
+        scrolling="auto"
+        allowtransparency="true"
+      ></iframe>
+
+    <%- include('./partials/dashboardFooter.ejs') %>
+  </div>
+</div>
+    

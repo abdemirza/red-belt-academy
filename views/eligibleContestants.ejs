@@ -1,0 +1,63 @@
+<%- include('./partials/dashboardHeader.ejs') %>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row grid-margin stretch-card">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">List of Eligible Candidates</h4>
+             <% categories='U7 U8 U9 U10 U11 U12 U13 U14 U15 U16 U17 U18 U21 SENIOR'.split(' ') , categoryAge=parseInt(category.substring(2))%>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead style="color: antiquewhite;">
+                  <tr>
+                    <th>PID</th>
+                    <th>NAME</th>
+                    <th>Gender</th>
+                    <th>AGE</th>
+                    <th>WEIGHT</th>
+                    <th>HEIGHT(in ft)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Splitting data from contestant database from array of objects -->
+                  <% for(obj of contestants) { %>
+                  <tr style="color: antiquewhite;">
+                    
+                    <% femaleContestant= !obj.gender &&  category[0]=='F' , maleContestant= obj.gender && category[0]=='M' %> 
+                    <% if ((( obj.age == categoryAge || obj.age == categoryAge-1)&& maleContestant)
+                     || (femaleContestant && (obj.age == categoryAge || obj.age == categoryAge-1)) || (category.substring(1)=='SENIOR' && maleContestant && obj.age>=21)  || (category.substring(1)=='SENIOR' && femaleContestant && obj.age>=21) || (obj.age>18 && obj.age<=21 && categoryAge>18 && maleContestant && category.substring(1)!='SENIOR' ) || (obj.age>=18 && categoryAge>18 && obj.age<=21 && femaleContestant && category.substring(1)!='SENIOR')){ %> <% for(key in obj.toObject()){ %> <%
+                    if(key!='club_id' && key!='__v' && key!='_id' &&
+                    key!='birthday' && key!='joinedTournaments' && key!='payments' && key!='state'){ %>
+                    <td>
+                      <%= key=='gender'?obj[key]?'Male':'Female':obj[key] %>
+                    </td>
+                    <% } }if(joinedContestants.indexOf(obj._id.toString())<0){%>
+                    <form action="/payment" method="post">
+                      <input type="hidden" name="tournamentId" value = "<%= tournament_id %>" >
+                      <input type="hidden" name="category" value = "<%= category %>" >
+                      <input type="hidden" name="contestantId" value = "<%= obj._id %>" >
+                      <input type="hidden" name="fees" value = "<%= fees %>" >
+                      <input type="hidden" name="tournamentName" value = "<%= tournament_name %>" >
+                      <input type="hidden" name="email" value = "<%= user_email %>" >
+                      <input type="hidden" name="contestantName" value = "<%= obj.name %>" >
+                      <td>
+                        <button  class="btn btn-primary">Join</button>
+                      </td>
+                    </form>
+                    
+                    <% }else{ %>
+                      <td>
+                        <div class="badge badge-success">Joined</div>
+                        </td>
+                  <%}}}%>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%- include('./partials/dashboardFooter.ejs') %>
+</div>
