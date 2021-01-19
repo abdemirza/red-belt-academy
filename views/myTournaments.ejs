@@ -68,9 +68,9 @@
               </tr>
               <br><br>
               <h1> </h1>
-              <a href="/editTournament/<%= tournament._id %>" class="btn btn-danger btn-block <%=  new Date().toJSON().slice(0,10).replace(/-/g,'-') > tournament.last_entry ?'disabled' : '' %>">Edit Details</a>
-              <a href="/judgeRequest/<%= tournament._id %>" class="btn btn-danger btn-block <%=  new Date().toJSON().slice(0,10).replace(/-/g,'-') > tournament.last_entry ?'disabled' : '' %>">See Judge Requests</a>
-              <a href="/startTournament/<%= tournament._id %>" class="btn btn-danger btn-block <%=  new Date().toJSON().slice(0,10).replace(/-/g,'-') > tournament.last_entry ?'disabled' : '' %>">Start Tournament</a>
+              <a href="/editTournament/<%= tournament._id %>" class="btn btn-danger btn-block">Edit Details</a>
+              <a href="/judgeRequest/<%= tournament._id %>" class="btn btn-danger btn-block " >See Judge Requests</a>
+              <a href="/startTournament/<%= tournament._id %>" class="btn btn-danger btn-block ">Start Tournament</a>
             </tbody>
           </div>
         </div>
