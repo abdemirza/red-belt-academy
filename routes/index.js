@@ -27,8 +27,14 @@ var instance = new Razorpay({
   key_secret: process.env.RAZORPAYSECRET,
 });
 
+// client.tournaments.reset({
+//   id: '5ff375adc68e8474767cbc24FU7',
+//   callback: (err, data) => {
+//     console.log(err, data);
+//   }
+// });
 // client.participants.index({
-//   id: "5ff375adc68e8474767cbc24FU21",
+//   id: "5ff375adc68e8474767cbc24FU11",
 //   callback: (err, data) => {
 //     console.log(data);
 //   },
@@ -85,7 +91,7 @@ function createTournament(tournament, category) {
 //   },
 // });
 // client.matches.index({
-//   id: "5fe69400977f45cbacdc643bFU15",
+//   id: "5ff375adc68e8474767cbc24FU11",
 //   callback: (err, data) => {
 //     console.log(err, data);
 //   },
