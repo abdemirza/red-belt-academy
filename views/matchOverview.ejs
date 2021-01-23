@@ -69,7 +69,7 @@
                   class="form-control"
                   placeholder="Enter Video Link"
                   name="videoId"
-                  pattern="[.]+"
+                  pattern='(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})'
                 />
                 <button class="btn btn-sm btn-primary m-3">Submit</button>
               </form>
@@ -160,7 +160,7 @@
                   class="form-control"
                   placeholder="Enter Video Link"
                   name="videoId"
-                  pattern="[.]+"
+                  pattern='(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})'
                 />
                 <button class="btn btn-sm btn-primary m-3">Submit</button>
               </form>
