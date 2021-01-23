@@ -34,7 +34,7 @@ var instance = new Razorpay({
 //   }
 // });
 // client.participants.index({
-//   id: "5ff375adc68e8474767cbc24FU11",
+//   id: "5ff375adc68e8474767cbc24FU12",
 //   callback: (err, data) => {
 //     console.log(data);
 //   },
@@ -91,7 +91,7 @@ function createTournament(tournament, category) {
 //   },
 // });
 // client.matches.index({
-//   id: "5ff375adc68e8474767cbc24FU11",
+//   id: "5ff3763ec68e8474767cbc25MU7",
 //   callback: (err, data) => {
 //     console.log(err, data);
 //   },
@@ -510,12 +510,10 @@ router.get(
   }
 );
 // ! checking if a match is there or not
-// ? Bahot raita phaila hai idhar , baad me sahi krna
 router.get(
   "/matchStat/:tournament_url/:contestant_id/:player_id",
   ensureAuthenticated,
   (req, res) => {
-    // ! security issue
     tournament_id = req.params.tournament_url;
     player_id = req.params.player_id;
     tournament_id = tournament_id.match(/[a-z0-9]{24}/)[0];
@@ -631,9 +629,9 @@ router.get(
 );
 router.post("/uploadVideo/:matchId/:playerId/:idNumber", (req, res) => {
   // ? Defining Regular expression to only store youtube video id
-  videoIdRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  videoIdRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   video_id = req.body.videoId.match(videoIdRegex);
-  if (video_id && video_id[7].length == 11) video_id = video_id[7];
+  video_id = video_id[video_id.length-1]
   Match.findOneAndUpdate(
     { match_id: req.params.matchId },
     {
