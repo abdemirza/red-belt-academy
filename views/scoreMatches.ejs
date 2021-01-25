@@ -125,7 +125,7 @@
           <form action="/submitScore" method="POST">
             <input type="hidden" name='category' value=<%= category %> >
             <input type="hidden" name='tournamentId' value=<%= tournamentId %> >
-            <input type="text" name="player1Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
+            <input type="text" pattern="^\d*\.?\d*$" title="Enter the score in decimals" name="player1Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
             <input type="hidden" name='judgeId' value="<%= judgeId %>">
             <input type="hidden" name='matchId' value="<%= match.match_id %>">
             <button class="btn btn-primary btn-block btn-sm mt-2">Submit Score</button>
@@ -134,7 +134,7 @@
           <form action="/submitScore" method="POST">
             <input type="hidden" name='category' value=<%= category %> >
             <input type="hidden" name='tournamentId' value=<%= tournamentId %> >
-            <input type="text" name="player1Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
+            <input type="text" pattern="^\d*\.?\d*$" title="Enter the score in decimals" name="player1Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
             <input type="hidden" name='judgeId' value="<%= judgeId %>">
             <input type="hidden" name='matchId' value="<%= match.match_id %>">
             <button class="btn btn-primary btn-block btn-sm mt-2">Submit Score</button>
@@ -177,7 +177,7 @@
             ></iframe>
             <% if(match.player2Score==undefined){ %> 
             <form action="/submitScore" method="POST">
-            <input type="text" name="player2Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
+            <input type="text" pattern="^\d*\.?\d*$" title="Enter the score in decimals" name="player2Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
             <input type="hidden" name='category' value=<%= category %> >
             <input type="hidden" name='tournamentId' value=<%= tournamentId %> >
             <input type="hidden" name='judgeId' value="<%= judgeId %>">
@@ -188,7 +188,7 @@
               <form action="/submitScore" method="POST">
                 <input type="hidden" name='category' value=<%= category %> >
                 <input type="hidden" name='tournamentId' value=<%= tournamentId %> >
-                <input type="text" name="player2Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
+                <input type="text" pattern="^\d*\.?\d*$" title="Enter the score in decimals" name="player2Score" class="form-control" placeholder="Enter Score (ex. 8.2)">
                 <input type="hidden" name='judgeId' value="<%= judgeId %>">
                 <input type="hidden" name='matchId' value="<%= match.match_id %>">
                 <button class="btn btn-primary btn-block btn-sm mt-2">Submit Score</button>
