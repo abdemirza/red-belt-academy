@@ -512,7 +512,7 @@ router.get(
 );
 // ! checking if a match is there or not
 router.get(
-  "/matchStat/:tournament_url/:contestant_id/:player_id",
+  "/matchStat/:tournament_url/:contestant_id/:player_id",ensureAuthenticated,
   (req, res) => {
     console.log(req.params.tournament_url.match(/[A-Z]+[0-9]+/))
     tournament_id = req.params.tournament_url;
