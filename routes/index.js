@@ -34,7 +34,7 @@ var instance = new Razorpay({
 //   }
 // });
 // client.participants.index({
-//   id: "5ff3763ec68e8474767cbc25MU13",
+//   id: "5ff375adc68e8474767cbc24FU7",
 //   callback: (err, data) => {
 //     console.log(data);
 //   },
@@ -83,13 +83,14 @@ function createTournament(tournament, category) {
 //     if (err) console.log(err);
 //   },
 // });
-client.matches.index({
-  id: "5ff3763ec68e8474767cbc25MU13",
-  callback: (err, data) => {
-    if (err) console.log(err);
-    else console.log(data)
-  },
-});
+// client.matches.index({
+//   id: "5ff3763ec68e8474767cbc25MSENIOR",
+//   callback: (err, data) => {
+//     if (err) console.log(err);
+//     else console.log(data)
+//   },
+// });
+// 5ff3763ec68e8474767cbc25MU7
 // client.matches.index({
 //   id: "5ff3763ec68e8474767cbc25MU7",
 //   callback: (err, data) => {
@@ -512,13 +513,14 @@ router.get(
 // ! checking if a match is there or not
 router.get(
   "/matchStat/:tournament_url/:contestant_id/:player_id",
-  ensureAuthenticated,
   (req, res) => {
+    console.log(req.params.tournament_url.match(/[A-Z]+[0-9]+/))
     tournament_id = req.params.tournament_url;
     player_id = req.params.player_id;
     tournament_id = tournament_id.match(/[a-z0-9]{24}/)[0];
-    category = req.params.tournament_url.match(/[A-Z]+[0-9]+/)[0];
+    category = req.params.tournament_url.match(/([A-Z]+[0-9]+)|([A-Z]+)/)[0];
     globalTournament = [];
+    console.log(`${tournament_id} ${category} ${req.params.tournament_url}`)
     Tournament.findOne({ _id: tournament_id }, (err, tournament) => {
       globalTournament = tournament;
     });
@@ -529,7 +531,9 @@ router.get(
         client.matches.index({
           id: `${req.params.tournament_url}`,
           callback: (err, matches) => {
+            console.log(matches)
             //? If the match is not started yet
+            if(err) res.send(err)
             if (Object.keys(matches).length == 0)
               res.send({
                 err: "No Matches Started , Checkout the Tournament Stats ",
