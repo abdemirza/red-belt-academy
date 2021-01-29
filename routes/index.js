@@ -21,7 +21,10 @@ const checksum_lib = require("./checksum");
 // Contestant.find({ _id: "5fe6d99d562542d14f6bfdd0" }, (err, data) => {
 //   console.log(data);
 // });
-
+// thename='Keerat Kaur Khurana'
+// Contestant.find({'name':{ $regex: new RegExp("^" + thename.toLowerCase(), "i") }},(err,data)=>{
+//   console.log(data)
+// })
 var instance = new Razorpay({
   key_id: process.env.RAZORPAYKEY,
   key_secret: process.env.RAZORPAYSECRET,
@@ -512,15 +515,16 @@ router.get(
 );
 // ! checking if a match is there or not
 router.get(
-  "/matchStat/:tournament_url/:contestant_id/:player_id",ensureAuthenticated,
+  "/matchStat/:tournament_url/:contestant_id/:player_id",
+  ensureAuthenticated,
   (req, res) => {
-    console.log(req.params.tournament_url.match(/[A-Z]+[0-9]+/))
+    console.log(req.params.tournament_url.match(/[A-Z]+[0-9]+/));
     tournament_id = req.params.tournament_url;
     player_id = req.params.player_id;
     tournament_id = tournament_id.match(/[a-z0-9]{24}/)[0];
     category = req.params.tournament_url.match(/([A-Z]+[0-9]+)|([A-Z]+)/)[0];
     globalTournament = [];
-    console.log(`${tournament_id} ${category} ${req.params.tournament_url}`)
+    console.log(`${tournament_id} ${category} ${req.params.tournament_url}`);
     Tournament.findOne({ _id: tournament_id }, (err, tournament) => {
       globalTournament = tournament;
     });
@@ -531,9 +535,9 @@ router.get(
         client.matches.index({
           id: `${req.params.tournament_url}`,
           callback: (err, matches) => {
-            console.log(matches)
+            console.log(matches);
             //? If the match is not started yet
-            if(err) res.send(err)
+            if (err) res.send(err);
             if (Object.keys(matches).length == 0)
               res.send({
                 err: "No Matches Started , Checkout the Tournament Stats ",
@@ -635,7 +639,7 @@ router.post("/uploadVideo/:matchId/:playerId/:idNumber", (req, res) => {
   // ? Defining Regular expression to only store youtube video id
   videoIdRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   video_id = req.body.videoId.match(videoIdRegex);
-  video_id = video_id[video_id.length-1]
+  video_id = video_id[video_id.length - 1];
   Match.findOneAndUpdate(
     { match_id: req.params.matchId },
     {
@@ -734,19 +738,30 @@ router.post("/judgeMatch/:tournamentId", (req, res) => {
 });
 // ? Submitting score by a judge
 router.post("/submitScore", (req, res) => {
-  if (req.body.player1Score == undefined) {
+  if (
+    req.body.player1Score == undefined &&
+    !isNaN(parseFloat(req.body.player2Score))
+  ) {
     obj = {
       $set: {
         [`player2Score.${req.body.judgeId}`]: parseFloat(req.body.player2Score),
       },
     };
-  }
-  if (req.body.player2Score == undefined) {
+  } else if (
+    req.body.player2Score == undefined &&
+    !isNaN(parseFloat(req.body.player1Score))
+  ) {
     obj = {
       $set: {
         [`player1Score.${req.body.judgeId}`]: parseFloat(req.body.player1Score),
       },
     };
+  } else {
+    return res.redirect(
+      `/judgeMatch/${
+        req.body.tournamentId.match(/[a-z0-9]{24}/)[0] + req.body.category
+      }/${req.body.matchId}`
+    );
   }
   Match.findOneAndUpdate({ match_id: req.body.matchId }, obj, (err, match) => {
     res.redirect(
@@ -853,6 +868,8 @@ router.get(
         // ! Problem yahan hai *******************************
         player1Score = sum(Object.values(match.player1Score));
         player2Score = sum(Object.values(match.player2Score));
+        if (isNaN(player1Score) || isNaN(player2Score))
+          return res.redirect(`/judgeMatch/${req.params.tournamentId}`);
         winnerId =
           player1Score > player2Score ? match.player1Id : match.player2Id;
         loserId =
