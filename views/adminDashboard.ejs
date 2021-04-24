@@ -1,0 +1,91 @@
+<%- include('./partials/dashboardHeader.ejs') %> 
+<% month=["January","February","March","April","May","June","July","August","September","October","November","December"]%>
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <% for(tournament of tournaments){ %>
+      <% event_date=tournament.event_date.split('-'),last_date=tournament.last_entry.split('-')%> 
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4
+              class="card-title text-center font-weight-bold"
+              style="color: #e1bee7; font-size: 1.5em"
+            >
+              <%= tournament.name %>
+            </h4>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="badge badge-pill badge-primary mr-2">1</div>
+                  <div class="d-inline display-5">
+                    Begins On :
+                    <div class="text-danger d-inline">
+                      <%= month[parseInt(event_date[1])-1]+' '+event_date[2]+' '+', '+event_date[0]%>
+                    
+                    </div>
+                  </div>
+                  <div class="text-danger d-inline"></div>
+                </td>
+              </tr>
+              <br /><br />
+              <tr>
+                <td>
+                  <div class="badge badge-pill badge-danger mr-2">2</div>
+                  <div class="d-inline display-5">Last Entries :</div>
+                  <div class="text-danger d-inline display-5">
+                    <%= month[parseInt(last_date[1])-1]+' '+last_date[2]+' '+', '+last_date[0]%>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <br /><br />
+                <td>
+                  <div class="badge badge-pill badge-warning mr-2">3</div>
+                  <div class="d-inline display-5">Entry Fee :</div>
+                  <i class="fas fa-rupee-sign text-danger"></i>
+                  <div class="text-danger d-inline"><%= tournament.entry_fee  %> </div>
+                </td>
+              </tr>
+              <br /><br />
+              <tr>
+                <td>
+                  <div class="badge badge-pill badge-success mr-2">4</div>
+                  <div class="d-inline display-5">Categories :</div>
+                  <div class="form-group mt-3 text-center">
+                    <form action="/admin/tournament/checkoutStats" method="post">
+                      <input type="hidden" name="tournamentId" value="<%= tournament._id %>">
+                    <select id="role" class="btn-group btn btn-light dropdown-toggle-split btn-sm" name="category">
+                       <% for(category of Object.keys(tournament.categories)){ %>
+                        <option value = <%= category  %>  class="form-group" name="category"><%= category  %> </option>
+                       <% } %>  
+                       </select>
+                       <button class=" mt-2 btn btn-primary btn-block btn-sm">Checkout Stats</button>
+                       </form>
+                     </div>
+                </td>
+              </tr>
+              <br /><br />
+              <tr>
+                <td>
+                  <div class="text-right">Contact for more details :</div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="text-primary text-right">
+                    <%= tournament.tournament_id %>
+                  </div>
+                </td>
+              </tr>
+              <br /><br />
+              <h1></h1>
+            </tbody>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('./partials/dashboardFooter.ejs') %>
