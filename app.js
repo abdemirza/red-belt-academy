@@ -96,6 +96,7 @@ app.use(function (req, res, next) {
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/user"));
 app.use("/register", require("./routes/index"));
+app.use("/admin", require("./routes/admin"));
 //  Error Page for an undefined route
 app.get("*", function (req, res) {
   res.status(404).render("404");

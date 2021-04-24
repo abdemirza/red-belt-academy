@@ -46,37 +46,62 @@
               ></iframe>
               <% }else if((currentPlayerId==match.player1Details._id.toString() &&
               match.player1VideoId=='blank') && match.player2Details!=null){ %>
-              <form
-                action="/uploadVideo/<%= match.match_id %>/<%= match.player1Id %>/<%= currentPlayerId==match.player1Details._id.toString() ? 1:2%>"
-                method="post"
-              >
+                <input
+                  type="hidden"
+                  id="matchId1"
+                  class="params1"
+                  name = 'matchId'
+                  value="<%=match.match_id%>"
+                />
+                <input
+                  type="hidden"
+                  id="player1Id"
+                  class="params1"
+                  name='player1Id'
+                  value="<%=match.player1Id%>"
+                />
+                <input type="hidden"
+                name="player1DetailsId"
+                class="params1"
+                value = "<%= match.player1Details._id.toString()%>"
+                >
+ 
+                <input type="hidden"
+                name="playerId"
+                class="formData1 params1"
+                value = "<%= match.player1Id%>"
+                >
                 <input
                   name="tournamentUrl"
                   type="hidden"
+                  class="formData1"
                   value="<%=tournamentUrl%>"
                 />
                 <input
                   name="contestantId"
                   type="hidden"
+                  class="formData1"
+                  id="currentPlayerId1"
                   value="<%=currentPlayerId%>"
                 />
                 <input
                   name="playerId"
                   type="hidden"
+                  id="playerId1"
+                  class="params1"
                   value="<%=match.player1Id%>"
                 />
-                <div class="p-1">
-                  <input
-                   type="text"
-                   class="form-control"
-                   placeholder="Enter Video Link"
-                   name="videoId"
-                   pattern="\d{10}"
-                   title = 'Please Enter a valid URL'
-                  />
+                <div class="p-2">
+                <input
+                  type="text"
+                  id="videoLink1"
+                  class="form-control videoUrl m-2 formData1"
+                  placeholder="Enter Video Link"
+                  name="videoId"
+                  pattern='.+'
+                />
                 </div>
-                <button class="btn btn-sm btn-primary m-3">Submit</button>
-              </form>
+                <button class="btn btn-sm btn-primary m-3" onclick="showSwal('submit-video-confirmation1')">Submit</button>
               <% } %> <%if(match.isWinner==match.player1Id &&
               match.isWinner!=null){ %>
               <div
@@ -141,37 +166,64 @@
               ></iframe>
               <% }else if((currentPlayerId==match.player2Details._id.toString() &&
               match.player2VideoId=='blank') && match.player1Details!=null){ %>
-              <form
-                action="/uploadVideo/<%= match.match_id %>/<%= match.player2Id %>/<%= currentPlayerId==match.player2Details._id.toString() ? 2:1%>"
-                method="post"
-              >
+           
+                <input
+                  type="hidden"
+                  id="matchId2"
+                  class="params2"
+                  name = 'matchId'
+                  value="<%=match.match_id%>"
+                />
+                <input
+                  type="hidden"
+                  id="player2Id"
+                  class="params2"
+                  name='player2Id'
+                  value="<%=match.player1Id%>"
+                />
+                <input type="hidden"
+                name="player2DetailsId"
+                class="params2"
+                value = "<%= match.player1Details._id.toString()%>"
+                >
+ 
+                <input type="hidden"
+                name="playerId"
+                class="formData2 params2"
+                value = "<%= match.player2Id%>"
+                >
                 <input
                   name="tournamentUrl"
                   type="hidden"
+                  class="formData2"
                   value="<%=tournamentUrl%>"
                 />
                 <input
                   name="contestantId"
                   type="hidden"
+                  class="formData2"
+                  id="currentPlayerId2"
                   value="<%=currentPlayerId%>"
                 />
                 <input
                   name="playerId"
                   type="hidden"
+                  id="playerId2"
+                  class="params2"
                   value="<%=match.player2Id%>"
                 />
-                <div class="p-1">
-                 <input
-                   type="text"
-                    class="form-control"
-                    placeholder="Enter Video Link"
-                    name="videoId"
-                    pattern="\d{10}"
-                    title="Please Enter a Valid URL"
-                 />
-                </div>
-                <button class="btn btn-sm btn-primary m-3">Submit</button>
-              </form>
+                <div class="p-2">
+                <input
+                  type="text"
+                  id="videoLink2"
+                  class="form-control formData2"
+                  placeholder="Enter Video Link"
+                  name="videoId"
+                  pattern='.+'
+                />
+              </div>
+                <button class="btn btn-sm btn-primary m-3" onclick="showSwal('submit-video-confirmation2')">Submit</button>
+              
               <% } %> <%if(match.isWinner==match.player2Id &&
               match.isWinner!=null){ %>
               <div
@@ -208,7 +260,11 @@
         </div>
         <% } %>
         </div>
-        <% } %> <%- include('./partials/dashboardFooter') %>
+        <% } %> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="/js/alerts.js"></script>
+        <script src="/js/avgrund.js"></script>
+        <%- include('./partials/dashboardFooter') %>
       </div>
     </div>
   </div>

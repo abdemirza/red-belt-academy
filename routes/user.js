@@ -124,8 +124,9 @@ router.post("/login", (req, res, next) => {
       req.flash("error_msg", "Please verify your email first.");
       res.redirect("/users/login");
     } else {
+      
       passport.authenticate("local", {
-        successRedirect: "/dashboard",
+        successRedirect: user.admin?"/admin/dashboard":"/dashboard",
         failureRedirect: "/users/login",
         failureFlash: true,
       })(req, res, next);

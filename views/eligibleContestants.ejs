@@ -1,4 +1,5 @@
 <%- include('./partials/dashboardHeader.ejs') %>
+<% function age(birthday){ return getAge(birthday.split("-")[1] + "-" + birthday.split("-")[0] + "-" + birthday.split("-")[2])}%>
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row grid-margin stretch-card">
@@ -23,10 +24,10 @@
                   <!-- Splitting data from contestant database from array of objects -->
                   <% for(obj of contestants) { %>
                   <tr style="color: antiquewhite;">
-                    
+                   
                     <% femaleContestant= !obj.gender &&  category[0]=='F' , maleContestant= obj.gender && category[0]=='M' %> 
-                    <% if ((( obj.age == categoryAge || obj.age == categoryAge-1)&& maleContestant)
-                     || (femaleContestant && (obj.age == categoryAge || obj.age == categoryAge-1)) || (category.substring(1)=='SENIOR' && maleContestant && obj.age>=21)  || (category.substring(1)=='SENIOR' && femaleContestant && obj.age>=21) || (obj.age>18 && obj.age<=21 && categoryAge>18 && maleContestant && category.substring(1)!='SENIOR' ) || (obj.age>=18 && categoryAge>18 && obj.age<=21 && femaleContestant && category.substring(1)!='SENIOR')){ %> <% for(key in obj.toObject()){ %> <%
+                    <% if ((( age(obj.birthday) == categoryAge || age(obj.birthday) == categoryAge-1)&& maleContestant)
+                     || (femaleContestant && (age(obj.birthday) == categoryAge || age(obj.birthday) == categoryAge-1)) || (category.substring(1)=='SENIOR' && maleContestant && age(obj.birthday)>=21)  || (category.substring(1)=='SENIOR' && femaleContestant && age(obj.birthday)>=21) || (age(obj.birthday)>18 && age(obj.birthday)<=21 && categoryAge>18 && maleContestant && category.substring(1)!='SENIOR' ) || (age(obj.birthday)>=18 && categoryAge>18 && age(obj.birthday)<=21 && femaleContestant && category.substring(1)!='SENIOR')){ %> <% for(key in obj.toObject()){ %> <%
                     if(key!='club_id' && key!='__v' && key!='_id' &&
                     key!='birthday' && key!='joinedTournaments' && key!='payments' && key!='state'){ %>
                     <td>

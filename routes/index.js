@@ -5,6 +5,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const Contestant = require("../models/Contestant");
 const Tournament = require("../models/Tournament");
+const getAge = require("age-by-birthdate");
 const User = require("../models/User");
 const JoinedTournament = require("../models/JoinedTournament");
 const challonge = require("challonge");
@@ -17,7 +18,7 @@ const fs = require("fs");
 const client = challonge.createClient({
   apiKey: "KIQKKvTHPLeGKYdlzx4Dc1Gx6yD25Gg2AK705sPZ",
 });
-const checksum_lib = require("./checksum");
+// const checksum_lib = require("./checksum");
 // Contestant.find({ _id: "5fe6d99d562542d14f6bfdd0" }, (err, data) => {
 //   console.log(data);
 // });
@@ -30,14 +31,16 @@ var instance = new Razorpay({
   key_secret: process.env.RAZORPAYSECRET,
 });
 
-// client.tournaments.reset({
-//   id: '5ff375adc68e8474767cbc24FU7',
-//   callback: (err, data) => {
-//     console.log(err, data);
-//   }
+// User.insertMany({admin:false})
+// Match.aggregate([
+//   { $group: { _id: "$match_id", count: { $sum: 1 } } },
+//   { $match: { _id: { $ne: null }, count: { $gt: 1 } } },
+//   { $project: { name: "$_id", _id: 0 } },
+// ],(err,result)=>{
+//   console.log(result)
 // });
 // client.participants.index({
-//   id: "5ff375adc68e8474767cbc24FU7",
+//   id: "5ff375adc68e8474767cbc24FU10",
 //   callback: (err, data) => {
 //     console.log(data);
 //   },
@@ -53,7 +56,14 @@ var instance = new Razorpay({
 //   callback: (err, data) => {
 //     if (err) console.log(err);
 //   }})
-
+// Tournament.findOne({_id:'5ff375adc68e8474767cbc24'},(err,tournament)=>{
+//   createTournament(tournament,'FU7')
+//   console.log('Done')
+// })
+// User.updateOne({ 'email': "abdemirza@gmail.com" }, { $set: { admin: true } },{upsert:true},(err,Data)=>{
+//   console.log(err)
+//   console.log(Data)
+// });
 function createTournament(tournament, category) {
   if (tournament.tournamentStart[category] == 0) {
     client.tournaments.create({
@@ -87,7 +97,7 @@ function createTournament(tournament, category) {
 //   },
 // });
 // client.matches.index({
-//   id: "5ff3763ec68e8474767cbc25MSENIOR",
+//   id: "5ff375adc68e8474767cbc24FSENIOR",
 //   callback: (err, data) => {
 //     if (err) console.log(err);
 //     else console.log(data)
@@ -115,6 +125,7 @@ function createTournament(tournament, category) {
 // });
 const { ensureAuthenticated } = require("../config/auth");
 const { runInContext } = require("vm");
+const Sequence = require("../models/Sequence");
 
 router.get("/", (req, res) => {
   res.render("index.ejs");
@@ -312,6 +323,7 @@ router.get(
           tournament_name: tournament.name,
           user_email: req.user.email,
           categories: Object.keys(tournament.categories),
+          getAge: getAge,
           // ! for sending the list of joined candidates
           // ! Using Object.values to convert it into array
           joinedContestants: Object.values(
@@ -462,7 +474,7 @@ router.post(
       { _id: req.params.tournament_id },
       {
         $set: {
-          [`isJudge.${req.params.tournament_id}`]: 1,
+          [`isJudge.${req.params.judge_id}`]: 1,
         },
       },
       (err) => {
@@ -567,6 +579,8 @@ router.get(
                       player1Id: matches[index]["match"]["player1Id"],
                       player2Id: matches[index]["match"]["player2Id"],
                       round: matches[index]["match"]["round"],
+                      tournamentId: tournament_id,
+                      category: category,
                     });
 
                     var currentPlayer = {};
@@ -594,7 +608,7 @@ router.get(
                       matchData[i]["player2Details"] =
                         player2Data.contestant_id;
                   }
-                  async function upsertMany(matchData) {
+                  async function createMatches(matchData) {
                     if (matchData.length > 0) {
                       for (const entry of matchData) {
                         await Match.findOneAndUpdate(
@@ -603,8 +617,8 @@ router.get(
                           { upsert: true },
                           (err, data) => {
                             Match.find({ $or: matchData })
-                              .populate("player1Details")
-                              .populate("player2Details")
+                            .populate("player1Details")
+                            .populate("player2Details")
                               .exec()
                               .then((matches) => {
                                 res.render("matchOverview", {
@@ -625,7 +639,7 @@ router.get(
                         currentPlayerId: currentPlayerDetails._id,
                       });
                   }
-                  upsertMany(matchData);
+                  createMatches(matchData);
                 }
               );
             }
@@ -636,6 +650,8 @@ router.get(
   }
 );
 router.post("/uploadVideo/:matchId/:playerId/:idNumber", (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
   // ? Defining Regular expression to only store youtube video id
   videoIdRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   video_id = req.body.videoId.match(videoIdRegex);
@@ -683,6 +699,8 @@ router.post("/judgeMatch/:tournamentId", (req, res) => {
             player1Id: matches[index]["match"]["player1Id"],
             player2Id: matches[index]["match"]["player2Id"],
             round: matches[index]["match"]["round"],
+            tournamentId: tournament_id,
+            category: req.body.category,
           });
         }
       }
@@ -705,7 +723,7 @@ router.post("/judgeMatch/:tournamentId", (req, res) => {
             if (player2Data != undefined)
               matchData[i]["player2Details"] = player2Data.contestant_id;
           }
-          async function upsertMany(matchData) {
+          async function createMatches(matchData) {
             for (const entry of matchData) {
               await Match.findOneAndUpdate(
                 entry,
@@ -730,7 +748,7 @@ router.post("/judgeMatch/:tournamentId", (req, res) => {
             }
           }
 
-          upsertMany(matchData);
+          createMatches(matchData);
         }
       );
     },
@@ -798,6 +816,8 @@ router.get("/judgeMatch/:tournamentId", ensureAuthenticated, (req, res) => {
             player1Id: matches[index]["match"]["player1Id"],
             player2Id: matches[index]["match"]["player2Id"],
             round: matches[index]["match"]["round"],
+            tournamentId: tournamentId,
+            category: category,
           });
         }
       }
@@ -820,7 +840,7 @@ router.get("/judgeMatch/:tournamentId", ensureAuthenticated, (req, res) => {
             if (player2Data != undefined)
               matchData[i]["player2Details"] = player2Data.contestant_id;
           }
-          async function upsertMany(matchData) {
+          async function createMatches(matchData) {
             for (const entry of matchData) {
               await Match.findOneAndUpdate(
                 entry,
@@ -844,7 +864,7 @@ router.get("/judgeMatch/:tournamentId", ensureAuthenticated, (req, res) => {
               );
             }
           }
-          upsertMany(matchData);
+          createMatches(matchData);
         }
       );
     },

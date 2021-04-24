@@ -5,6 +5,13 @@ const MatchSchema = new mongoose.Schema({
   match_id: {
     type: String,
   },
+  tournamentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tournament",
+  },
+  category: {
+    type: String,
+  },
   player1Id: {
     type: String,
   },
@@ -21,23 +28,23 @@ const MatchSchema = new mongoose.Schema({
   },
   player1Score: {
     type: Object,
-    default:{'noOne':0}
+    default: { noOne: 0 },
   },
   player2Score: {
     type: Object,
-    default:{'noOne':0}
+    default: { noOne: 0 },
   },
-  isWinner:{
-    type:String,
+  isWinner: {
+    type: String,
   },
-  round:{
+  round: {
     type: Number,
   },
-  tournamentCategory:{
-    type:String,
+  tournamentCategory: {
+    type: String,
   },
-  tournamentId:{
-    type:ObjectID,
+  tournamentId: {
+    type: ObjectID,
   },
   player1Details: {
     type: mongoose.Schema.Types.ObjectId,

@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  admin: {
+    type: Boolean,
+    default: false,
+  },
   contact: {
     type: String,
     required: false,
@@ -13,9 +17,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role:{
-    type : String,
-    required:true,
+  role: {
+    type: String,
+    required: true,
   },
   password: {
     type: String,

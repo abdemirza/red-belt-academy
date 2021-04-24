@@ -47,16 +47,16 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div
-          class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"
+          class="text-center  navbar-brand-wrapper d-flex align-items-center justify-content-center"
         >
-          <a class="navbar-brand brand-logo" href="/"
+          <a class="navbar-brand brand-logo " href="/"
             ><img
-              src="../images/logo/redBeltAcademyRectangle.png"
+              src="/images/logo/redBeltAcademyRectangle.png"
               width="100%"
               alt="logo"
           /></a>
           <a class="navbar-brand brand-logo-mini" href="/"
-            ><img src="../images/logo/redBeltSmall.png" alt="logo"
+            ><img src="/images/logo/redBeltSmall.png" alt="logo"
           /></a>
         </div>
         <div
@@ -143,6 +143,7 @@
         <!-- partial -->
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <% if(!user.admin){ %> 
           <ul class="nav">
             <li class="nav-item">
               <a class="nav-link" href="/dashboard">
@@ -220,5 +221,15 @@
               </a>
             </li>
           </ul>
+          <% }else{ %>
+            <ul class="nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/dashboard">
+                  <img src="/images/icons/user.png" alt="" class="img-sm mr-2" />
+                  <span class="menu-title">Dashboard</span>
+                </a>
+              </li>
+              
+            <% } %>  
         </nav>
       
